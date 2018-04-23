@@ -23,9 +23,9 @@ defmodule Explorer.Chain.Statistics do
   """
 
   @transaction_count_query """
-    SELECT count(transactions.id)
+    SELECT count(transactions.hash)
       FROM transactions
-      JOIN blocks ON blocks.id = transactions.block_id
+      JOIN blocks ON blocks.hash = transactions.block_hash
       WHERE blocks.timestamp > NOW() - interval '1 day'
   """
 
@@ -33,7 +33,7 @@ defmodule Explorer.Chain.Statistics do
     SELECT COUNT(missing_number)
       FROM generate_series(0, $1, 1) AS missing_number
       LEFT JOIN blocks ON missing_number = blocks.number
-      WHERE blocks.id IS NULL
+      WHERE blocks.hash IS NULL
   """
 
   @lag_query """
@@ -47,13 +47,13 @@ defmodule Explorer.Chain.Statistics do
   """
 
   @block_velocity_query """
-    SELECT count(blocks.id)
+    SELECT count(blocks.hash)
       FROM blocks
       WHERE blocks.inserted_at > NOW() - interval '1 minute'
   """
 
   @transaction_velocity_query """
-    SELECT count(transactions.id)
+    SELECT count(transactions.hash)
       FROM transactions
       WHERE transactions.inserted_at > NOW() - interval '1 minute'
   """

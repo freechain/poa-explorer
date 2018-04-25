@@ -3,7 +3,7 @@ defmodule Explorer.Chain do
   The chain context.
   """
 
-  import Ecto.Query, only: [from: 2, or_where: 3, order_by: 2, preload: 2, where: 2, join: 4]
+  import Ecto.Query, only: [from: 2, join: 4, or_where: 3, order_by: 2, order_by: 3, preload: 2, where: 2]
 
   alias Explorer.Chain.{
     Address,
@@ -442,7 +442,9 @@ defmodule Explorer.Chain do
 
     InternalTransaction
     |> where_address_fields_match(address_fields, id)
-    |> join(:inner, [inner_transaction], transaction in assoc(inner_transaction, :transaction))
+    |> join(:inner, [internal_transaction], transaction in assoc(internal_transaction, :transaction))
+    |> join(:left, [internal_transaction, transaction], block in assoc(transaction, :block))
+    |> order_by([it, transaction, block], desc: block.number, desc: transaction.transaction_index, desc: it.index)
     |> preload(transaction: :block)
     |> join_associations(necessity_by_association)
     |> Repo.all()

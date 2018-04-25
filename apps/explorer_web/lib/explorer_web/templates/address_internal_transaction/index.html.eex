@@ -79,14 +79,14 @@
                   class: "transaction-log__link") %>
               </td>
               <td class="internal-transaction__to-address"><%= ExplorerWeb.BlockView.age(internal_transaction.transaction.block) %></td>
-              <td class="internal-transaction__to-address">
-                <%= link(internal_transaction.to_address.hash,
-                  to: address_path(@conn, :show, @conn.assigns.locale, internal_transaction.to_address.hash),
-                  class: "transaction-log__link") %>
-              </td>
               <td class="internal-transaction__from-address">
                 <%= link(internal_transaction.from_address.hash,
                   to: address_path(@conn, :show, @conn.assigns.locale, internal_transaction.from_address.hash),
+                  class: "transaction-log__link") %>
+              </td>
+              <td class="internal-transaction__to-address">
+                <%= link(internal_transaction.to_address.hash,
+                  to: address_path(@conn, :show, @conn.assigns.locale, internal_transaction.to_address.hash),
                   class: "transaction-log__link") %>
               </td>
               <td class="internal-transaction__to-address"><%= ExplorerWeb.TransactionView.value(internal_transaction) %></td>

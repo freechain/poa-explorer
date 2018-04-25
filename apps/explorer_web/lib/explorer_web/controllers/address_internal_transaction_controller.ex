@@ -1,6 +1,6 @@
 defmodule ExplorerWeb.AddressInternalTransactionController do
   @moduledoc """
-    Display all the Transactions that terminate at this Address.
+    Manages the displaying of information about internal transactions as they relate to addresses
   """
 
   use ExplorerWeb, :controller
@@ -14,7 +14,6 @@ defmodule ExplorerWeb.AddressInternalTransactionController do
           necessity_by_association: %{
             from_address: :optional,
             to_address: :optional
-
           },
           pagination: params
         ]
@@ -25,7 +24,7 @@ defmodule ExplorerWeb.AddressInternalTransactionController do
             Keyword.merge(options, current_filter(params))
           )
 
-        render(conn, "index.html", address: address, page: page)
+        render(conn, "index.html", address: address, filter: params["filter"], page: page)
 
       {:error, :not_found} ->
         not_found(conn)

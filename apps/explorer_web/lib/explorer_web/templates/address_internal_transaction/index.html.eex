@@ -19,6 +19,41 @@
       </h2>
     </div>
   </div>
+  <div class="dropdown u-float-right u-push-sm-right u-push-sm-bottom">
+    <button data-test="filter_dropdown" class="button button--secondary dropdown-toggle" type="button"
+      id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Filter: <%= format_current_filter(@filter) %>
+    </button>
+    <div class="dropdown-menu dropdown-menu-right filter" aria-labelledby="dropdownMenu2">
+      <%= link(
+        gettext("All"),
+        class: "address__link address__link--active dropdown-item",
+        to: address_internal_transaction_path(@conn, :index, @conn.assigns.locale, @conn.params["address_id"])
+      ) %>
+      <%= link(
+        gettext("To"),
+        class: "address__link address__link--active dropdown-item",
+        to: address_internal_transaction_path(
+          @conn,
+          :index,
+          @conn.assigns.locale,
+          @conn.params["address_id"],
+          filter: "to"
+        )
+      ) %>
+      <%= link(
+        gettext("From"),
+        class: "address__link address__link--active dropdown-item",
+        to: address_internal_transaction_path(
+          @conn,
+          :index,
+          @conn.assigns.locale,
+          @conn.params["address_id"],
+          filter: "from"
+        )
+      ) %>
+    </div>
+  </div>
   <div class="internal-transaction__container">
     <%= if length(@page) > 0 do %>
       <table class="internal-transaction__table">
@@ -32,7 +67,7 @@
         </thead>
         <%= for internal_transaction <- @page do %>
           <tgroup>
-            <tr>
+            <tr data-test="internal_transaction">
               <td>
                 <%= link(internal_transaction.transaction.hash,
                   to: transaction_path(@conn, :show, @conn.assigns.locale, internal_transaction.transaction.hash),
